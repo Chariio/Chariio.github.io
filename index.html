@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NDUO – Dual-Screen Emulator for iPhone</title>
+<meta name="description" content="NDUO plays your own DS, GBA, GB and GBC game files on iPhone, with a true dual-screen mode for iPhone Duo.">
+<link rel="icon" href="assets/icon.png">
+<link rel="apple-touch-icon" href="assets/icon.png">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",Arial,sans-serif;color:#111;background:#fff;line-height:1.5;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+.wrap{max-width:1080px;margin:0 auto;padding:0 22px}
+.lang{position:absolute;top:16px;right:18px;display:flex;border:1px solid #ddd;border-radius:999px;overflow:hidden;font-size:13px}
+.lang button{border:0;background:#fff;padding:6px 12px;cursor:pointer;font:inherit;color:#666}
+.lang button.on{background:#111;color:#fff}
+.hero{text-align:center;padding:72px 0 40px}
+.hero img.icon{width:112px;height:112px;border-radius:25px;box-shadow:0 10px 30px rgba(0,0,0,.15)}
+.hero h1{font-size:44px;letter-spacing:-.02em;margin-top:18px}
+.hero p.tag{font-size:20px;color:#555;margin:8px auto 28px;max-width:520px}
+.btn{display:inline-flex;align-items:center;gap:12px;background:#000;color:#fff;text-decoration:none;padding:14px 26px;border-radius:14px;text-align:left}
+.btn svg{width:30px;height:30px;fill:#fff}
+.btn small{display:block;font-size:12px;opacity:.75;line-height:1.1}
+.btn b{display:block;font-size:20px;line-height:1.2}
+.btn[aria-disabled=true]{cursor:default}
+.note{font-size:13px;color:#888;margin-top:12px}
+.duo{margin:40px auto 0;max-width:440px}
+.duo img{width:100%;border-radius:22px;box-shadow:0 20px 50px rgba(0,0,0,.12)}
+section.f{padding:56px 0;display:grid;gap:36px;align-items:center}
+section.f h2{font-size:30px;letter-spacing:-.01em;margin-bottom:10px}
+section.f p{color:#555;font-size:17px}
+section.f .img img{width:100%;max-width:320px;display:block;margin:0 auto;border-radius:28px;box-shadow:0 14px 40px rgba(0,0,0,.12)}
+section.f .img.wide img{max-width:640px;border-radius:18px}
+.grid{display:grid;gap:22px;grid-template-columns:1fr;padding:30px 0 60px}
+.card{background:#f5f5f7;border-radius:20px;padding:24px}
+.card h3{font-size:18px;margin-bottom:6px}
+.card p{color:#555;font-size:15px}
+.legal{background:#f5f5f7;border-radius:20px;padding:24px;font-size:14px;color:#555;margin-bottom:50px}
+footer{border-top:1px solid #eee;padding:28px 0 40px;font-size:14px;color:#777;text-align:center}
+footer nav{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin-bottom:10px}
+footer a{text-decoration:none;color:#333}
+[data-es]{display:none}
+html[lang=es] [data-en]{display:none}
+html[lang=es] [data-es]{display:revert}
+@media(min-width:800px){
+ .hero{padding:100px 0 50px}.hero h1{font-size:60px}
+ section.f{grid-template-columns:1fr 1fr;padding:80px 0}
+ section.f.rev .txt{order:2}
+ section.f h2{font-size:38px}
+ .grid{grid-template-columns:repeat(3,1fr)}
+}
+</style>
+</head>
+<body>
+<div class="lang" role="group" aria-label="Language">
+ <button id="b-en" class="on" onclick="setLang('en')">EN</button>
+ <button id="b-es" onclick="setLang('es')">ES</button>
+</div>
+
+<header class="hero wrap">
+ <img class="icon" src="assets/icon.png" alt="NDUO app icon">
+ <h1>NDUO</h1>
+ <p class="tag"><span data-en>The dual-screen emulator for iPhone. Made for iPhone Duo.</span><span data-es>El emulador de doble pantalla para iPhone. Hecho para el iPhone Duo.</span></p>
+ <!-- APP_STORE_URL: replace href="#" with the real App Store link once 1.0 is approved, and remove aria-disabled -->
+ <a class="btn" href="#" aria-disabled="true" id="appstore">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.37 12.6c-.02-2.3 1.88-3.4 1.97-3.46-1.07-1.57-2.74-1.78-3.33-1.8-1.42-.15-2.77.83-3.49.83-.72 0-1.83-.81-3.01-.79-1.55.02-2.98.9-3.78 2.29-1.61 2.8-.41 6.94 1.16 9.21.77 1.11 1.68 2.36 2.88 2.31 1.16-.05 1.6-.75 3-.75s1.79.75 3.01.72c1.25-.02 2.03-1.13 2.79-2.25.88-1.29 1.24-2.54 1.26-2.6-.03-.01-2.42-.93-2.46-3.71zM14.08 5.85c.64-.77 1.07-1.85.95-2.92-.92.04-2.03.61-2.69 1.38-.59.68-1.11 1.77-.97 2.82 1.03.08 2.07-.52 2.71-1.28z"/></svg>
+  <span><small data-en>Coming soon on the</small><small data-es>Muy pronto en el</small><b>App Store</b></span>
+ </a>
+ <p class="note"><span data-en>iPhone · iOS 16 or later · No games included</span><span data-es>iPhone · iOS 16 o posterior · No incluye juegos</span></p>
+ <div class="duo"><img src="assets/duo-game.jpg" alt="NDUO running on iPhone Duo, unfolded, with one screen on each side of the fold"></div>
+</header>
+
+<main class="wrap">
+ <section class="f">
+  <div class="txt">
+   <h2 data-en>Built for iPhone Duo</h2><h2 data-es>Hecho para el iPhone Duo</h2>
+   <p data-en>Unfold it and NDUO turns it into a real dual-screen handheld: the top screen and the touch screen sit on either side of the fold. Tap and drag on the bottom screen like a stylus.</p>
+   <p data-es>Ábrelo y NDUO lo convierte en una consola de doble pantalla de verdad: la pantalla de arriba y la táctil quedan a cada lado de la bisagra. Toca y arrastra en la pantalla de abajo como con un stylus.</p>
+  </div>
+  <div class="img wide"><img src="assets/duo-library.jpg" alt="NDUO library on iPhone Duo"></div>
+ </section>
+
+ <section class="f rev">
+  <div class="txt">
+   <h2 data-en>Two screens on every iPhone</h2><h2 data-es>Dos pantallas en cualquier iPhone</h2>
+   <p data-en>Dual-screen layouts in portrait and landscape work great on every other iPhone too.</p>
+   <p data-es>Los diseños de doble pantalla en vertical y horizontal también funcionan en cualquier otro iPhone.</p>
+  </div>
+  <div class="img"><img src="assets/shot-dual.jpg" alt="Dual-screen layout on iPhone"></div>
+ </section>
+
+ <section class="f">
+  <div class="txt">
+   <h2 data-en>Four handheld systems, one app</h2><h2 data-es>Cuatro consolas portátiles, una app</h2>
+   <p data-en>Plays your own DS, GBA, GB and GBC game files. A built-in BIOS is included, so no BIOS files are needed.</p>
+   <p data-es>Juega tus propios archivos de juegos de DS, GBA, GB y GBC. Trae un BIOS integrado, así que no necesitas archivos BIOS.</p>
+  </div>
+  <div class="img"><img src="assets/shot-systems.jpg" alt="NDUO playing a homebrew game"></div>
+ </section>
+
+ <section class="f rev">
+  <div class="txt">
+   <h2 data-en>Skins that feel like the real thing</h2><h2 data-es>Skins que se sienten reales</h2>
+   <p data-en>Realistic skins inspired by classic handhelds, plus a clean glass design that fits right in with iOS.</p>
+   <p data-es>Skins realistas inspirados en las portátiles clásicas, con un diseño de cristal limpio que encaja con iOS.</p>
+  </div>
+  <div class="img"><img src="assets/shot-skins.jpg" alt="Skin picker"></div>
+ </section>
+
+ <section class="f">
+  <div class="txt">
+   <h2 data-en>Make your own layout, free</h2><h2 data-es>Crea tu propio diseño, gratis</h2>
+   <p data-en>Move and resize the screens and every on-screen button, with snap guides and integer scaling, saved per console and orientation.</p>
+   <p data-es>Mueve y cambia el tamaño de las pantallas y de cada botón, con guías y escala entera, guardado por consola y orientación.</p>
+  </div>
+  <div class="img"><img src="assets/shot-layout.jpg" alt="Custom layout editor"></div>
+ </section>
+
+ <div class="grid">
+  <div class="card"><h3 data-en>Touch controls made for phones</h3><h3 data-es>Controles táctiles para el teléfono</h3>
+   <p data-en>Slide between buttons, press A+B together, diagonals, size, opacity and vibration.</p><p data-es>Desliza entre botones, A+B a la vez, diagonales, tamaño, opacidad y vibración.</p></div>
+  <div class="card"><h3 data-en>Game controllers</h3><h3 data-es>Controles de consola</h3>
+   <p data-en>Works with MFi, Xbox and PlayStation controllers.</p><p data-es>Funciona con controles MFi, Xbox y PlayStation.</p></div>
+  <div class="card"><h3 data-en>Save states</h3><h3 data-es>Partidas guardadas</h3>
+   <p data-en>Save states plus normal in-game saves.</p><p data-es>Estados guardados además de las partidas normales del juego.</p></div>
+  <div class="card"><h3 data-en>Your library</h3><h3 data-es>Tu biblioteca</h3>
+   <p data-en>Cover Flow, cartridge view and title-screen view.</p><p data-es>Cover Flow, vista de cartuchos y vista de pantallas de título.</p></div>
+  <div class="card"><h3 data-en>Home Screen widget</h3><h3 data-es>Widget de inicio</h3>
+   <p data-en>Open recent, favorite or most played games with one tap (iOS 17+).</p><p data-es>Abre tus juegos recientes, favoritos o más jugados con un toque (iOS 17+).</p></div>
+  <div class="card"><h3 data-en>Sharp 3D</h3><h3 data-es>3D nítido</h3>
+   <p data-en>High-resolution 3D on newer iPhones; 3x by default on iPhone 15 Pro and newer.</p><p data-es>3D en alta resolución en iPhones nuevos; 3x por defecto en iPhone 15 Pro o más nuevo.</p></div>
+ </div>
+
+ <div class="legal">
+  <p data-en><b>No games included.</b> NDUO does not include or download any games or system files. You must supply your own legally obtained game files, such as backups of cartridges you own, or free homebrew from independent developers. NDUO is not affiliated with or endorsed by any console maker.</p>
+  <p data-es><b>No incluye juegos.</b> NDUO no incluye ni descarga juegos ni archivos del sistema. Debes usar tus propios archivos obtenidos legalmente, como copias de cartuchos que tienes, o homebrew gratis de desarrolladores independientes. NDUO no está afiliado ni respaldado por ningún fabricante de consolas.</p>
+ </div>
+</main>
+
+<footer class="wrap">
+ <nav>
+  <a href="https://chariio.github.io/privacy/"><span data-en>Privacy</span><span data-es>Privacidad</span></a>
+  <a href="https://chariio.github.io/support/"><span data-en>Support</span><span data-es>Soporte</span></a>
+  <a href="mailto:nduoemu.support@gmail.com">nduoemu.support@gmail.com</a>
+ </nav>
+ <p>© 2026 Charlie Rodriguez Garcia</p>
+</footer>
+<script>
+function setLang(l){document.documentElement.lang=l;document.getElementById('b-en').classList.toggle('on',l=='en');document.getElementById('b-es').classList.toggle('on',l=='es');try{localStorage.lang=l}catch(e){}}
+(function(){var l;try{l=localStorage.lang}catch(e){}if(!l)l=(navigator.language||'').slice(0,2)=='es'?'es':'en';setLang(l)})();
+document.getElementById('appstore').addEventListener('click',function(e){if(this.getAttribute('href')=='#')e.preventDefault()});
+</script>
+</body>
+</html>
